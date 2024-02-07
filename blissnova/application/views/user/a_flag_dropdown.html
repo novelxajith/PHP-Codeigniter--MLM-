@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
+<style>
+  .custom-select {
+    position: relative;
+    display: inline-block;
+  }
+
+  .custom-select select {
+    display: none;
+  }
+
+  .select-selected {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .select-selected .flag-icon {
+    margin-right: 5px;
+  }
+
+  .select-items {
+    position: absolute;
+    background-color: #f1f1f1;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .select-items div {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  .select-items div:hover {
+    background-color: #ddd;
+  }
+</style>
+</head>
+<body>
+<p>Select element containing all countries and country codes</p>
+<!-- country codes (ISO 3166) and Dial codes. -->
+<div class="custom-select">
+  <div class="select-selected">
+    <span class="flag-icon flag-icon-gb"></span>
+    Norway (+47)
+  </div>
+  <div class="select-items">
+    <div data-countryCode="GB"><span class="flag-icon flag-icon-gb"></span> Norway (+47)</div>
+    <div data-countryCode="US"><span class="flag-icon flag-icon-us"></span> UK (+44)</div>
+    <div data-countryCode="DZ"><span class="flag-icon flag-icon-dz"></span> Algeria (+213)</div>
+    <div data-countryCode="AD"><span class="flag-icon flag-icon-ad"></span> Andorra (+376)</div>
+    <!-- Rest of the options... -->
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var selectSelected = document.querySelector('.select-selected');
+  var selectItems = document.querySelector('.select-items');
+
+  // Toggle the dropdown
+  selectSelected.addEventListener('click', function() {
+    selectItems.style.display = selectItems.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // Set the selected value
+  selectItems.addEventListener('click', function(event) {
+    if (event.target.tagName === 'DIV') {
+      var countryCode = event.target.getAttribute('data-countryCode');
+      var flagIcon = event.target.querySelector('.flag-icon');
+      var selectedText = event.target.textContent;
+
+      selectSelected.innerHTML = '<span class="flag-icon ' + flagIcon.classList + '"></span>' + selectedText;
+      selectItems.style.display = 'none';
+    }
+  });
+
+  // Close the dropdown if the user clicks outside of it
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.custom-select')) {
+      selectItems.style.display = 'none';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
